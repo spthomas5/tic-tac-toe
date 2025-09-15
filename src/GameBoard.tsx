@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import Square from './Square';
+import { useResponsiveSize } from './hooks/useResponsiveSize';
 
 type Cell = 'X' | 'O' | null;
 type Board = Cell[][];
@@ -119,25 +120,87 @@ const GameBoard = () => {
     setWinner(null);
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: useResponsiveSize(5),
+      paddingVertical: useResponsiveSize(2, 'height'),
+    },
+    title: {
+      fontSize: useResponsiveSize(8),
+      fontFamily: 'Poppins-Bold',
+      textAlign: 'center',
+      marginBottom: useResponsiveSize(3, 'height'),
+      color: '#333',
+    },
+    status: {
+      fontSize: useResponsiveSize(5),
+      fontFamily: 'Poppins-Medium',
+      textAlign: 'center',
+      marginBottom: useResponsiveSize(4, 'height'),
+      color: '#666',
+      minHeight: useResponsiveSize(4, 'height'),
+    },
+    board: {
+      width: useResponsiveSize(85),
+      aspectRatio: 1,
+      marginBottom: useResponsiveSize(4, 'height'),
+    },
+    row: {
+      flex: 1,
+      flexDirection: 'row',
+    },
+    resetButton: {
+      paddingVertical: useResponsiveSize(2, 'height'),
+      paddingHorizontal: useResponsiveSize(8),
+      backgroundColor: '#007AFF',
+      borderRadius: useResponsiveSize(3),
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.5,
+      elevation: 5,
+    },
+    resetButtonText: {
+      color: 'white',
+      fontSize: useResponsiveSize(4.5),
+      fontFamily: 'Poppins-SemiBold',
+    },
+  });
+
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>Tic Tac Toe</Text>
 
       {/* Show game status */}
       <Text style={styles.status}>
-        {winner === 'player' && 'You Win!'}
-        {winner === 'cpu' && 'CPU Wins!'}
-        {winner === 'draw' && "Draw!"}
+        {winner === 'player' && 'You Win! 🎉'}
+        {winner === 'cpu' && 'CPU Wins! 🤖'}
+        {winner === 'draw' && "It's a Draw! 🤝"}
         {!winner && !gameOver && 'Your Turn'}
       </Text>
 
-      {board.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
-          {row.map((cell, colIndex) => (
-            <Square key={`${rowIndex}-${colIndex}`} value={cell} onPress={() => handlePress(rowIndex, colIndex)} />
-          ))}
-        </View>
-      ))}
+      <View style={styles.board}>
+        {board.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((cell, colIndex) => (
+              <Square
+                key={`${rowIndex}-${colIndex}`}
+                value={cell}
+                onPress={() => handlePress(rowIndex, colIndex)}
+                row={rowIndex}
+                col={colIndex}
+              />
+            ))}
+          </View>
+        ))}
+      </View>
 
       <TouchableOpacity style={styles.resetButton} onPress={resetGame} >
         <Text style={styles.resetButtonText}>New Game</Text>
@@ -146,36 +209,5 @@ const GameBoard = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 28,
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  status: {
-    fontSize: 18,
-    fontFamily: 'Poppins-Medium',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  resetButton: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#007AFF',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  resetButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Medium',
-  },
-});
 
 export default GameBoard;
