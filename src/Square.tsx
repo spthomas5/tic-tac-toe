@@ -11,21 +11,37 @@ const Square = ({ onPress, value, row, col, disabled = false }: {
 }) => {
   const borderWidth = useResponsiveSize(0.4);
 
+  const getPlayerColor = () => {
+    if (value === 'X') return '#ff4444'; // Red for X
+    if (value === 'O') return '#4488ff'; // Blue for O
+    return '#00ff88'; // Default green
+  };
+
   const styles = StyleSheet.create({
     square: {
       flex: 1,
       aspectRatio: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#f8f8f8',
-      borderRightWidth: col < 2 ? borderWidth : 0,
-      borderBottomWidth: row < 2 ? borderWidth : 0,
-      borderColor: '#333',
+      backgroundColor: '#2a2a2a',
+      borderRightWidth: col < 2 ? borderWidth * 0.5 : 0,
+      borderBottomWidth: row < 2 ? borderWidth * 0.5 : 0,
+      borderColor: '#404040',
+      margin: useResponsiveSize(0.5),
+      borderRadius: useResponsiveSize(2),
+      shadowColor: getPlayerColor(),
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: value ? 0.3 : 0,
+      shadowRadius: 4,
+      elevation: value ? 4 : 0,
     },
     text: {
-      fontSize: useResponsiveSize(12),
+      fontSize: useResponsiveSize(8),
       fontWeight: 'bold',
-      color: '#333',
+      color: getPlayerColor(),
       fontFamily: 'Poppins-Bold',
     },
   });

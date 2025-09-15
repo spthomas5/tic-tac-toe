@@ -195,6 +195,13 @@ const GameBoard = () => {
 
     const padding = squareSize * 0.15; // Extend line beyond squares
 
+    // Get the winning color based on the winner
+    const getWinningLineColor = () => {
+      if (winner === 'player') return '#ff4444'; // Red for X (player)
+      if (winner === 'cpu') return '#4488ff'; // Blue for O (CPU)
+      return '#00ff88'; // Default green
+    };
+
     if (winningLine.type === 'horizontal') {
       const row = winningLine.start.row;
       lineStyle = {
@@ -236,7 +243,7 @@ const GameBoard = () => {
 
     return (
       <View style={styles.winningLineContainer}>
-        <Animated.View style={[styles.winningLine, lineStyle]} />
+        <Animated.View style={[styles.winningLine, lineStyle, { backgroundColor: getWinningLineColor() }]} />
       </View>
     );
   };
@@ -248,20 +255,21 @@ const GameBoard = () => {
       alignItems: 'center',
       paddingHorizontal: useResponsiveSize(5),
       paddingVertical: useResponsiveSize(2, 'height'),
+      backgroundColor: '#1a1a1a',
     },
     title: {
       fontSize: useResponsiveSize(8),
       fontFamily: 'Poppins-Bold',
       textAlign: 'center',
       marginBottom: useResponsiveSize(3, 'height'),
-      color: '#333',
+      color: '#ffffff',
     },
     status: {
       fontSize: useResponsiveSize(5),
       fontFamily: 'Poppins-Medium',
       textAlign: 'center',
       marginBottom: useResponsiveSize(4, 'height'),
-      color: '#666',
+      color: '#a0a0a0',
       minHeight: useResponsiveSize(4, 'height'),
     },
     board: {
@@ -269,6 +277,17 @@ const GameBoard = () => {
       aspectRatio: 1,
       marginBottom: useResponsiveSize(4, 'height'),
       position: 'relative',
+      backgroundColor: '#262626',
+      borderRadius: useResponsiveSize(4),
+      padding: useResponsiveSize(2),
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 8,
     },
     winningLineContainer: {
       position: 'absolute',
@@ -281,7 +300,7 @@ const GameBoard = () => {
       pointerEvents: 'none',
     },
     winningLine: {
-      backgroundColor: '#000000',
+      backgroundColor: '#00ff88',
       position: 'absolute',
     },
     row: {
@@ -289,22 +308,22 @@ const GameBoard = () => {
       flexDirection: 'row',
     },
     resetButton: {
-      paddingVertical: useResponsiveSize(2, 'height'),
-      paddingHorizontal: useResponsiveSize(8),
-      backgroundColor: '#007AFF',
-      borderRadius: useResponsiveSize(3),
+      paddingVertical: useResponsiveSize(3, 'height'),
+      paddingHorizontal: useResponsiveSize(12),
+      backgroundColor: '#00ff88',
+      borderRadius: useResponsiveSize(8),
       alignItems: 'center',
-      shadowColor: '#000',
+      shadowColor: '#00ff88',
       shadowOffset: {
         width: 0,
-        height: 2,
+        height: 4,
       },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.5,
-      elevation: 5,
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 8,
     },
     resetButtonText: {
-      color: 'white',
+      color: '#1a1a1a',
       fontSize: useResponsiveSize(4.5),
       fontFamily: 'Poppins-SemiBold',
     },
