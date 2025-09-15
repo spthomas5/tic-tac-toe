@@ -2,11 +2,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useResponsiveSize } from './hooks/useResponsiveSize';
 
-const Square = ({ onPress, value, row, col }: {
+const Square = ({ onPress, value, row, col, disabled = false }: {
   onPress: () => void,
   value: string | null,
   row: number,
-  col: number
+  col: number,
+  disabled?: boolean
 }) => {
   const borderWidth = useResponsiveSize(0.4);
 
@@ -31,7 +32,11 @@ const Square = ({ onPress, value, row, col }: {
 
   return (
     <View>
-      <TouchableOpacity style={styles.square} onPress={onPress}>
+      <TouchableOpacity
+        style={styles.square}
+        onPress={onPress}
+        disabled={disabled}
+      >
         <Text style={styles.text}>{value}</Text>
       </TouchableOpacity>
 

@@ -16,6 +16,7 @@ const GameBoard = () => {
 
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState<'player' | 'cpu' | 'draw' | null>(null);
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const confettiRef = useRef<ConfettiCannon>(null);
 
   const makeAIMove = (currentBoard: Board) => {
@@ -51,12 +52,13 @@ const GameBoard = () => {
         setWinner('draw');
         setGameOver(true);
       }
+
+      // CPU turn is over
+      setIsPlayerTurn(true);
     }
   };
 
   const handlePress = (rowIndex: number, colIndex: number) => {
-    // Check if valid move
-    if (board[rowIndex][colIndex] !== null || gameOver) return;
 
     // Player moves (X)
     const newBoard = board.map(row => [...row]);
@@ -77,6 +79,7 @@ const GameBoard = () => {
     }
 
     // AI moves after a delay
+    setIsPlayerTurn(false);
     setTimeout(() => {
       makeAIMove(newBoard);
     }, 500);
@@ -121,6 +124,7 @@ const GameBoard = () => {
     ]);
     setGameOver(false);
     setWinner(null);
+    setIsPlayerTurn(true);
     confettiRef.current?.stop();
   };
 
@@ -187,7 +191,8 @@ const GameBoard = () => {
         {winner === 'player' && 'You Win! 🎉'}
         {winner === 'cpu' && 'CPU Wins! 🤖'}
         {winner === 'draw' && "It's a Draw! 🤝"}
-        {!winner && !gameOver && 'Your Turn'}
+        {!winner && !gameOver && !isPlayerTurn && 'CPU\'s Turn'}
+        {!winner && !gameOver && isPlayerTurn && 'Your Turn'}
       </Text>
 
       <View style={styles.board}>
@@ -200,6 +205,7 @@ const GameBoard = () => {
                 onPress={() => handlePress(rowIndex, colIndex)}
                 row={rowIndex}
                 col={colIndex}
+                disabled={!isPlayerTurn || gameOver || cell !== null}
               />
             ))}
           </View>
