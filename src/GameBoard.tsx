@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import ConfettiCannon from 'react-native-confetti-cannon';
 import Square from './Square';
 import { useResponsiveSize } from './hooks/useResponsiveSize';
 
@@ -15,6 +16,7 @@ const GameBoard = () => {
 
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState<'player' | 'cpu' | 'draw' | null>(null);
+  const confettiRef = useRef<ConfettiCannon>(null);
 
   const makeAIMove = (currentBoard: Board) => {
     // Find all empty cells
@@ -66,6 +68,7 @@ const GameBoard = () => {
     if (result === 'X') {
       setWinner('player');
       setGameOver(true);
+      setTimeout(() => confettiRef.current?.start(), 100);
       return;
     } else if (result === 'draw') {
       setWinner('draw');
@@ -118,6 +121,7 @@ const GameBoard = () => {
     ]);
     setGameOver(false);
     setWinner(null);
+    confettiRef.current?.stop();
   };
 
   const styles = StyleSheet.create({
@@ -205,6 +209,16 @@ const GameBoard = () => {
       <TouchableOpacity style={styles.resetButton} onPress={resetGame} >
         <Text style={styles.resetButtonText}>New Game</Text>
       </TouchableOpacity>
+
+      {winner === 'player' && (
+        <ConfettiCannon
+          ref={confettiRef}
+          count={150}
+          origin={{x: -10, y: 0}}
+          autoStart={false}
+          fadeOut={true}
+        />
+      )}
 
     </View>
   );
