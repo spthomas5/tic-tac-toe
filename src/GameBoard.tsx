@@ -1,22 +1,42 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Square from './Square';
 
-const GameBoard = () => {
-  const [board, setBoard] = useState<string[]>(Array(9).fill(''));
+type Cell = 'X' | 'O' | null;
+type Board = Cell[][];
 
-  const handlePress = (index: number) => {
-    console.log(index);
+const GameBoard = () => {
+  const [board, setBoard] = useState<Board>([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ])
+
+  const handlePress = (rowIndex: number, colIndex: number) => {
+    console.log(rowIndex, colIndex);
   };
+
 
   return (
     <View>
-      {board.map((square, index) => (
-        <Square key={index} value={square} onPress={() => handlePress(index)} />
+      <Text>Tic Tac Toe</Text>
+
+      {board.map((row, rowIndex) => (
+        <View key={rowIndex} style={styles.row}>
+          {row.map((cell, colIndex) => (
+            <Square key={`${rowIndex}-${colIndex}`} value={cell} onPress={() => handlePress(rowIndex, colIndex)} />
+          ))}
+        </View>
       ))}
-      <Text>GameBoard</Text>
+      
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+  },
+});
 
 export default GameBoard;

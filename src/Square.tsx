@@ -1,15 +1,23 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const Square = ({ value, onPress }: { value: string, onPress: () => void }) => {
+const Square = ({ onPress, value }: {  onPress: () => void, value: string | null }) => {
   return (
     <View>
-      <TouchableOpacity onPress={onPress}> 
-        <Text>Square</Text>
+      <TouchableOpacity style={styles.square} onPress={onPress}> 
+        <Text>{value}</Text>
       </TouchableOpacity>
       
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  square: {
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+  },
+});
 
 export default Square;
