@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import Square from './Square';
 
 type Cell = 'X' | 'O' | null;
@@ -55,7 +55,16 @@ const GameBoard = () => {
   }
 
   return false;
-};
+  };
+  
+  const resetGame = () => {
+    setBoard([
+      [null, null, null],
+      [null, null, null],
+      [null, null, null],
+    ]);
+    setIsPlayerTurn(true);
+  };
 
   return (
     <View>
@@ -68,6 +77,10 @@ const GameBoard = () => {
           ))}
         </View>
       ))}
+
+      <TouchableOpacity style={styles.resetButton} onPress={resetGame} >
+        <Text>Reset Game</Text>
+      </TouchableOpacity>
       
     </View>
   );
@@ -76,6 +89,12 @@ const GameBoard = () => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+  },
+  resetButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'red',
+    borderRadius: 5,
   },
 });
 
