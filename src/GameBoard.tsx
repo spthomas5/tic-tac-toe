@@ -12,8 +12,17 @@ const GameBoard = () => {
     [null, null, null],
   ])
 
+  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
+
   const handlePress = (rowIndex: number, colIndex: number) => {
-    console.log(rowIndex, colIndex);
+    if (board[rowIndex][colIndex] !== null) {
+      return;
+    }
+
+    const newBoard = [...board];
+    newBoard[rowIndex][colIndex] = isPlayerTurn ? 'X' : 'O';
+    setBoard(newBoard);
+    setIsPlayerTurn(prevIsPlayerTurn => !prevIsPlayerTurn);
   };
 
 
