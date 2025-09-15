@@ -149,16 +149,16 @@ const GameBoard = () => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 28,
+    fontFamily: 'Poppins-Bold',
     textAlign: 'center',
     marginBottom: 20,
   },
   status: {
     fontSize: 18,
+    fontFamily: 'Poppins-Medium',
     textAlign: 'center',
     marginBottom: 20,
-    fontWeight: '600',
   },
   row: {
     flexDirection: 'row',
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Medium',
   },
 });
 
