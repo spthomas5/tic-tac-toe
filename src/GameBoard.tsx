@@ -353,6 +353,13 @@ const GameBoard = () => {
       fontSize: useResponsiveSize(4.5),
       fontFamily: 'Poppins-SemiBold',
     },
+    resetButtonDisabled: {
+      backgroundColor: '#404040',
+      shadowOpacity: 0.1,
+    },
+    resetButtonTextDisabled: {
+      color: '#666666',
+    },
   });
 
   return (
@@ -388,8 +395,12 @@ const GameBoard = () => {
         {renderWinningLine()}
       </View>
 
-      <TouchableOpacity style={styles.resetButton} onPress={resetGame} >
-        <Text style={styles.resetButtonText}>New Game</Text>
+      <TouchableOpacity
+        style={[styles.resetButton, !board.some(row => row.some(cell => cell !== null)) && styles.resetButtonDisabled]}
+        onPress={resetGame}
+        disabled={!board.some(row => row.some(cell => cell !== null))}
+      >
+        <Text style={[styles.resetButtonText, !board.some(row => row.some(cell => cell !== null)) && styles.resetButtonTextDisabled]}>New Game</Text>
       </TouchableOpacity>
 
       {winner === 'player' && (
