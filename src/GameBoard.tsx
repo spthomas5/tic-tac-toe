@@ -285,7 +285,10 @@ const GameBoard = () => {
       fontFamily: 'Poppins-Bold',
       textAlign: 'center',
       marginBottom: useResponsiveSize(3, 'height'),
-      color: '#ffffff',
+      color: '#00ff88',
+      textShadowColor: '#00ff88',
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 10,
     },
     status: {
       fontSize: useResponsiveSize(5),
