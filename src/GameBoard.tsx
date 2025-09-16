@@ -4,6 +4,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import * as Haptics from 'expo-haptics';
 import Square from './Square';
 import { useResponsiveSize } from './hooks/useResponsiveSize';
+import { useGameAudio } from './hooks/useGameAudio';
 
 type Cell = 'X' | 'O' | null;
 type Board = Cell[][];
@@ -14,6 +15,8 @@ type WinningLine = {
 };
 
 const GameBoard = () => {
+  const { playClick, playWin, playLose, playDraw, playCpuMove } = useGameAudio();
+
   const [board, setBoard] = useState<Board>([
     [null, null, null],
     [null, null, null],
@@ -64,6 +67,9 @@ const GameBoard = () => {
       newBoard[row][col] = 'O';
       setBoard(newBoard);
 
+      // Play CPU move sound
+      playCpuMove();
+
       // Check if AI won
       const result = checkWinner(newBoard);
       if (result.winner === 'O') {
@@ -72,17 +78,15 @@ const GameBoard = () => {
         setWinningLine(result.winningLine);
         // Error haptic for CPU win
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      } else if (result.winner === 'X') {
-        setWinner('player');
-        setGameOver(true);
-        setWinningLine(result.winningLine);
-        // Success haptic for player win
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        // Play lose sound
+        playLose();
       } else if (result.winner === 'draw') {
         setWinner('draw');
         setGameOver(true);
         // Neutral haptic for draw
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        // Play draw sound
+        playDraw();
       }
 
       // CPU turn is over
@@ -93,6 +97,8 @@ const GameBoard = () => {
   const handlePress = (rowIndex: number, colIndex: number) => {
     // Medium haptic feedback for player move
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    // Play click sound
+    playClick();
 
     // Player moves (X)
     const newBoard = board.map(row => [...row]);
@@ -107,6 +113,8 @@ const GameBoard = () => {
       setWinningLine(result.winningLine);
       // Success haptic for player win
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      // Play win sound
+      playWin();
       setTimeout(() => confettiRef.current?.start(), 100);
       return;
     } else if (result.winner === 'draw') {
@@ -114,6 +122,8 @@ const GameBoard = () => {
       setGameOver(true);
       // Neutral haptic for draw
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      // Play draw sound
+      playDraw();
       return;
     }
 
