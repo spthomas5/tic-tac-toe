@@ -188,7 +188,9 @@ const GameBoard = () => {
     if (!winningLine) return null;
 
     const boardSize = useResponsiveSize(85);
-    const squareSize = boardSize / 3;
+    const boardPadding = useResponsiveSize(2); // Account for board container padding
+    const actualBoardSize = boardSize - (boardPadding * 2);
+    const squareSize = actualBoardSize / 3;
     const lineThickness = useResponsiveSize(1);
 
     let lineStyle = {};
@@ -207,11 +209,11 @@ const GameBoard = () => {
       lineStyle = {
         width: lineDrawAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, boardSize + (padding * 2)],
+          outputRange: [0, actualBoardSize + (padding * 2)],
         }),
         height: lineThickness,
-        top: (row * squareSize) + (squareSize / 2) - (lineThickness / 2),
-        left: -padding,
+        top: boardPadding + (row * squareSize) + (squareSize / 2) - (lineThickness / 2),
+        left: boardPadding - padding,
       };
     } else if (winningLine.type === 'vertical') {
       const col = winningLine.start.col;
@@ -219,26 +221,47 @@ const GameBoard = () => {
         width: lineThickness,
         height: lineDrawAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, boardSize + (padding * 2)],
+          outputRange: [0, actualBoardSize + (padding * 2)],
         }),
-        top: -padding,
-        left: (col * squareSize) + (squareSize / 2) - (lineThickness / 2),
+        top: boardPadding - padding,
+        left: boardPadding + (col * squareSize) + (squareSize / 2) - (lineThickness / 2),
       };
     } else if (winningLine.type === 'diagonal') {
       const isMainDiagonal = winningLine.start.row === 0 && winningLine.start.col === 0;
-      const extendedLength = Math.sqrt(2) * (boardSize + (padding * 2));
+      // Simple: diagonal of the board plus some padding
+      const diagonalLength = Math.sqrt(2) * actualBoardSize + (padding * 2);
 
-      lineStyle = {
-        width: lineDrawAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, extendedLength],
-        }),
-        height: lineThickness,
-        top: (boardSize / 2) - (lineThickness / 2),
-        left: -(extendedLength - boardSize) / 2,
-        transformOrigin: 'left center',
-        transform: [{ rotate: isMainDiagonal ? '45deg' : '-45deg' }],
-      };
+      if (isMainDiagonal) {
+        // Top-left to bottom-right: start from top-left corner
+        lineStyle = {
+          width: lineDrawAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, diagonalLength],
+          }),
+          height: lineThickness,
+          top: boardPadding - padding,
+          left: boardPadding - padding,
+          transformOrigin: 'left center',
+          transform: [{ rotate: '45deg' }],
+        };
+      } else {
+        // Top-right to bottom-left: center the line properly
+        // Need to account for where the line actually goes when rotated 135°
+        const centerX = boardPadding + (actualBoardSize / 2);
+        const centerY = boardPadding + (actualBoardSize / 2);
+
+        lineStyle = {
+          width: lineDrawAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, diagonalLength],
+          }),
+          height: lineThickness,
+          top: centerY - (lineThickness / 2),
+          left: centerX - ((Math.sqrt(2) * actualBoardSize + (padding * 2)) / 2), // Static calculation
+          transformOrigin: 'center',
+          transform: [{ rotate: '135deg' }],
+        };
+      }
     }
 
     return (
