@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity, Animated } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import * as Haptics from 'expo-haptics';
 import Square from './Square';
 import { useResponsiveSize } from './hooks/useResponsiveSize';
 
@@ -69,13 +70,19 @@ const GameBoard = () => {
         setWinner('cpu');
         setGameOver(true);
         setWinningLine(result.winningLine);
+        // Error haptic for CPU win
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       } else if (result.winner === 'X') {
         setWinner('player');
         setGameOver(true);
         setWinningLine(result.winningLine);
+        // Success haptic for player win
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       } else if (result.winner === 'draw') {
         setWinner('draw');
         setGameOver(true);
+        // Neutral haptic for draw
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       }
 
       // CPU turn is over
@@ -84,6 +91,8 @@ const GameBoard = () => {
   };
 
   const handlePress = (rowIndex: number, colIndex: number) => {
+    // Medium haptic feedback for player move
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     // Player moves (X)
     const newBoard = board.map(row => [...row]);
@@ -96,11 +105,15 @@ const GameBoard = () => {
       setWinner('player');
       setGameOver(true);
       setWinningLine(result.winningLine);
+      // Success haptic for player win
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       setTimeout(() => confettiRef.current?.start(), 100);
       return;
     } else if (result.winner === 'draw') {
       setWinner('draw');
       setGameOver(true);
+      // Neutral haptic for draw
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       return;
     }
 
@@ -172,6 +185,9 @@ const GameBoard = () => {
   };
   
   const resetGame = () => {
+    // Light haptic feedback for reset
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
     setBoard([
       [null, null, null],
       [null, null, null],
