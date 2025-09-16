@@ -199,8 +199,8 @@ const GameBoard = () => {
 
     // Get the winning color based on the winner
     const getWinningLineColor = () => {
-      if (winner === 'player') return '#ff4444'; // Red for X (player)
-      if (winner === 'cpu') return '#4488ff'; // Blue for O (CPU)
+      if (winner === 'player') return '#00ff88'; // Green for X (player)
+      if (winner === 'cpu') return '#00aaff'; // Neon blue for O (CPU)
       return '#00ff88'; // Default green
     };
 
@@ -245,20 +245,16 @@ const GameBoard = () => {
           transform: [{ rotate: '45deg' }],
         };
       } else {
-        // Top-right to bottom-left: center the line properly
-        // Need to account for where the line actually goes when rotated 135°
-        const centerX = boardPadding + (actualBoardSize / 2);
-        const centerY = boardPadding + (actualBoardSize / 2);
-
+        // Top-right to bottom-left: start from top-right corner
         lineStyle = {
           width: lineDrawAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [0, diagonalLength],
           }),
           height: lineThickness,
-          top: centerY - (lineThickness / 2),
-          left: centerX - ((Math.sqrt(2) * actualBoardSize + (padding * 2)) / 2), // Static calculation
-          transformOrigin: 'center',
+          top: boardPadding - padding,
+          left: boardPadding + actualBoardSize + padding,
+          transformOrigin: 'left center',
           transform: [{ rotate: '135deg' }],
         };
       }

@@ -12,8 +12,8 @@ const Square = ({ onPress, value, row, col, disabled = false }: {
   const borderWidth = useResponsiveSize(0.4);
 
   const getPlayerColor = () => {
-    if (value === 'X') return '#ff4444'; // Red for X
-    if (value === 'O') return '#4488ff'; // Blue for O
+    if (value === 'X') return '#00ff88'; // Green for X
+    if (value === 'O') return '#00aaff'; // Neon blue for O
     return '#00ff88'; // Default green
   };
 
