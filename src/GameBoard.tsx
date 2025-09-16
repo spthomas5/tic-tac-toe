@@ -276,15 +276,19 @@ const GameBoard = () => {
       paddingVertical: useResponsiveSize(2, 'height'),
       backgroundColor: '#1a1a1a',
     },
+    titleContainer: {
+      marginBottom: useResponsiveSize(3, 'height'),
+      shadowColor: '#00ff88',
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.8,
+      shadowRadius: 15,
+      elevation: 10,
+    },
     title: {
       fontSize: useResponsiveSize(8),
       fontFamily: 'Poppins-Bold',
       textAlign: 'center',
-      marginBottom: useResponsiveSize(3, 'height'),
       color: '#00ff88',
-      textShadowColor: '#00ff88',
-      textShadowOffset: { width: 0, height: 0 },
-      textShadowRadius: 10,
     },
     status: {
       fontSize: useResponsiveSize(5),
@@ -353,7 +357,9 @@ const GameBoard = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tic Tac Toe</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Tic Tac Toe</Text>
+      </View>
 
       {/* Show game status */}
       <Text style={styles.status}>
