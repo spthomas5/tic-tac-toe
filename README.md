@@ -2,7 +2,7 @@
 
 ## How to Run
 
-1. Install Expo Go on your iOS device from the App Store
+1. Install Expo Go on your iOS device from the App Store (turn on ringer and haptics for full experience)
 2. Clone and run:
    ```bash
    git clone https://github.com/spthomas5/tic-tac-toe.git
