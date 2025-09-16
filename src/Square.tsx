@@ -13,7 +13,7 @@ const Square = ({ onPress, value, row, col, disabled = false }: {
 
   const getPlayerColor = () => {
     if (value === 'X') return '#00ff88'; // Green for X
-    if (value === 'O') return '#00aaff'; // Neon blue for O
+    if (value === 'O') return '#0066ff'; // Blue for O
     return '#00ff88'; // Default green
   };
 
@@ -38,6 +38,13 @@ const Square = ({ onPress, value, row, col, disabled = false }: {
       shadowRadius: 4,
       elevation: value ? 4 : 0,
     },
+    textContainer: {
+      shadowColor: getPlayerColor(),
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: value ? 0.6 : 0,
+      shadowRadius: 8,
+      elevation: value ? 6 : 0,
+    },
     text: {
       fontSize: useResponsiveSize(8),
       fontWeight: 'bold',
@@ -53,7 +60,9 @@ const Square = ({ onPress, value, row, col, disabled = false }: {
         onPress={onPress}
         disabled={disabled}
       >
-        <Text style={styles.text}>{value}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{value}</Text>
+        </View>
       </TouchableOpacity>
 
     </View>

@@ -200,7 +200,7 @@ const GameBoard = () => {
     // Get the winning color based on the winner
     const getWinningLineColor = () => {
       if (winner === 'player') return '#00ff88'; // Green for X (player)
-      if (winner === 'cpu') return '#00aaff'; // Neon blue for O (CPU)
+      if (winner === 'cpu') return '#0066ff'; // Blue for O (CPU)
       return '#00ff88'; // Default green
     };
 
